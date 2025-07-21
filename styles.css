@@ -9,7 +9,7 @@
     --poster-green: #0e863f;
     --dark-green: #0a6e33;
     --dark-bg: #0A0E27;
-    --light-bg: #F8F9FA;
+    --light-bg: #F0F4EC;
     --text-dark: #1A1A1A;
     --text-light: #FFFFFF;
     --gray-100: #F3F4F6;
@@ -18,29 +18,122 @@
     --gray-600: #4B5563;
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    
+    /* Bohemian Green Palette */
+    --bohemian-sage: #87A96B;
+    --bohemian-moss: #8FBC8F;
+    --bohemian-olive: #6B8E23;
+    --bohemian-forest: #4A7C59;
+    --bohemian-mint: #98D8C8;
+    --bohemian-cream: #FFF8DC;
+    --bohemian-terracotta: #CC7351;
+    --bohemian-sand: #F5DEB3;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes leafFloat {
+    0% { transform: rotate(0deg) translateX(0) translateY(0); }
+    25% { transform: rotate(5deg) translateX(10px) translateY(-10px); }
+    50% { transform: rotate(-5deg) translateX(-10px) translateY(-20px); }
+    75% { transform: rotate(3deg) translateX(5px) translateY(-10px); }
+    100% { transform: rotate(0deg) translateX(0) translateY(0); }
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
+    background: linear-gradient(135deg, var(--light-bg) 0%, #E8F0E3 50%, var(--bohemian-cream) 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(135, 169, 107, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(74, 124, 89, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(143, 188, 143, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 1;
 }
 
-/* Navbar */
+/* Navbar with Bohemian Style */
 .navbar {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow);
+    background: rgba(240, 244, 236, 0.95);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 2px 20px rgba(107, 142, 35, 0.1);
     z-index: 1000;
+    animation: slideInFromTop 0.8s ease-out;
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .nav-content {
@@ -54,6 +147,15 @@ body {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--primary-green);
+    position: relative;
+    animation: fadeIn 1s ease-out;
+}
+
+.logo::after {
+    content: '🌿';
+    position: absolute;
+    right: -30px;
+    animation: leafFloat 4s ease-in-out infinite;
 }
 
 .nav-menu {
@@ -62,15 +164,41 @@ body {
     gap: 2rem;
 }
 
+.nav-menu li {
+    animation: fadeIn 1s ease-out backwards;
+}
+
+.nav-menu li:nth-child(1) { animation-delay: 0.1s; }
+.nav-menu li:nth-child(2) { animation-delay: 0.2s; }
+.nav-menu li:nth-child(3) { animation-delay: 0.3s; }
+.nav-menu li:nth-child(4) { animation-delay: 0.4s; }
+.nav-menu li:nth-child(5) { animation-delay: 0.5s; }
+
 .nav-menu a {
     text-decoration: none;
     color: var(--text-dark);
     font-weight: 500;
-    transition: color 0.3s;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--bohemian-sage);
+    transition: width 0.3s;
 }
 
 .nav-menu a:hover {
     color: var(--primary-green);
+}
+
+.nav-menu a:hover::after {
+    width: 100%;
 }
 
 .menu-toggle {
@@ -87,15 +215,31 @@ body {
     transition: 0.3s;
 }
 
-/* Hero Section */
+/* Hero Section with Bohemian Design */
 .hero {
     min-height: 100vh;
-    background: var(--poster-green);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--bohemian-forest) 100%);
     display: flex;
     align-items: center;
     padding-top: 80px;
     position: relative;
     overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(135, 169, 107, 0.2) 0%, transparent 70%);
+    animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .hero-content {
@@ -110,18 +254,19 @@ body {
 
 .hero-poster {
     flex: 0 0 auto;
+    animation: slideInFromLeft 1s ease-out, float 6s ease-in-out infinite;
 }
 
 .hero-poster img {
     width: 100%;
     max-width: 400px;
     height: auto;
-    border-radius: 16px;
 }
 
 .hero-text {
     color: var(--text-light);
     flex: 1;
+    animation: slideInFromRight 1s ease-out;
 }
 
 .hero-title {
@@ -129,6 +274,7 @@ body {
     font-weight: 500;
     margin-bottom: 1rem;
     opacity: 0.9;
+    animation: fadeIn 1.2s ease-out;
 }
 
 .hero-subtitle {
@@ -137,24 +283,27 @@ body {
     line-height: 1.1;
     margin-bottom: 1rem;
     text-shadow: 
-        3px 3px 0 #000,
-        4px 4px 0 #000,
-        5px 5px 0 #000,
+        3px 3px 0 rgba(0, 0, 0, 0.3),
+        4px 4px 0 rgba(0, 0, 0, 0.2),
+        5px 5px 0 rgba(0, 0, 0, 0.1),
         6px 6px 8px rgba(0, 0, 0, 0.8);
-    -webkit-text-stroke: 2px #000;
-    text-stroke: 2px #000;
+    -webkit-text-stroke: 2px rgba(0, 0, 0, 0.3);
+    text-stroke: 2px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1.5s ease-out;
 }
 
 .hero-year {
     font-size: 1.25rem;
     margin-bottom: 2rem;
     opacity: 0.9;
+    animation: fadeIn 1.8s ease-out;
 }
 
 .hero-buttons {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    animation: fadeIn 2s ease-out;
 }
 
 .btn {
@@ -165,6 +314,26 @@ body {
     border-radius: 50px;
     transition: all 0.3s;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .btn-primary {
@@ -188,14 +357,24 @@ body {
     color: var(--primary-green);
 }
 
-
-/* Sections */
+/* Sections with Bohemian Texture */
 .section {
     padding: 5rem 0;
+    position: relative;
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    z-index: -1;
 }
 
 .section-dark {
-    background: var(--dark-bg);
+    background: linear-gradient(135deg, var(--dark-bg) 0%, #0F1729 100%);
     color: var(--text-light);
 }
 
@@ -208,9 +387,22 @@ body {
     font-weight: 800;
     text-align: center;
     margin-bottom: 3rem;
+    position: relative;
+    animation: fadeIn 0.8s ease-out;
 }
 
-/* About Section */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--bohemian-sage);
+}
+
+/* About Section with Bohemian Cards */
 .about-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -218,35 +410,59 @@ body {
 }
 
 .about-card {
-    background: var(--text-light);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 248, 220, 0.9) 100%);
     padding: 2rem;
     border-radius: 16px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 30px rgba(107, 142, 35, 0.1);
     text-align: center;
-    transition: transform 0.3s;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(135, 169, 107, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite reverse;
 }
 
 .about-card:hover {
     transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 15px 40px rgba(107, 142, 35, 0.2);
+    border-color: var(--bohemian-sage);
 }
 
 .card-icon {
     font-size: 3rem;
     margin-bottom: 1rem;
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .about-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     color: var(--primary-green);
+    position: relative;
+    z-index: 1;
 }
 
-/* Theme Section */
+.about-card p {
+    position: relative;
+    z-index: 1;
+}
+
+/* Theme Section with Bohemian Style */
 .theme-content {
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
+    animation: fadeIn 1s ease-out;
 }
 
 .theme-title {
@@ -269,14 +485,25 @@ body {
 }
 
 .keyword {
-    background: var(--primary-green);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--bohemian-forest) 100%);
     color: var(--text-light);
     padding: 0.5rem 1.5rem;
     border-radius: 25px;
     font-weight: 600;
+    transition: all 0.3s;
+    animation: fadeIn 1s ease-out backwards;
 }
 
-/* Timeline */
+.keyword:nth-child(1) { animation-delay: 0.1s; }
+.keyword:nth-child(2) { animation-delay: 0.2s; }
+.keyword:nth-child(3) { animation-delay: 0.3s; }
+
+.keyword:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Timeline with Bohemian Elements */
 .timeline {
     position: relative;
     max-width: 800px;
@@ -290,7 +517,7 @@ body {
     transform: translateX(-50%);
     width: 2px;
     height: 100%;
-    background: var(--gray-300);
+    background: linear-gradient(to bottom, var(--bohemian-sage) 0%, var(--bohemian-moss) 100%);
 }
 
 .timeline-item {
@@ -298,7 +525,13 @@ body {
     align-items: center;
     margin-bottom: 3rem;
     position: relative;
+    animation: fadeIn 1s ease-out backwards;
 }
+
+.timeline-item:nth-child(1) { animation-delay: 0.2s; }
+.timeline-item:nth-child(2) { animation-delay: 0.4s; }
+.timeline-item:nth-child(3) { animation-delay: 0.6s; }
+.timeline-item:nth-child(4) { animation-delay: 0.8s; }
 
 .timeline-item:nth-child(even) {
     flex-direction: row-reverse;
@@ -320,11 +553,17 @@ body {
 
 .timeline-content {
     flex: 1;
-    background: var(--text-light);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.95) 100%);
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 5px 20px rgba(107, 142, 35, 0.15);
     position: relative;
+    transition: all 0.3s;
+}
+
+.timeline-content:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(107, 142, 35, 0.2);
 }
 
 .timeline-content h4 {
@@ -333,18 +572,18 @@ body {
 }
 
 .timeline-item::after {
-    content: '';
+    content: '🌿';
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 16px;
-    height: 16px;
-    background: var(--primary-green);
+    font-size: 1.5rem;
+    background: var(--light-bg);
+    padding: 0.25rem;
     border-radius: 50%;
-    border: 4px solid var(--text-light);
+    animation: leafFloat 3s ease-in-out infinite;
 }
 
-/* Prize Section */
+/* Prize Section with Bohemian Cards */
 .prize-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -352,25 +591,34 @@ body {
 }
 
 .prize-card {
-    background: var(--text-light);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.95) 100%);
     padding: 2rem;
     border-radius: 16px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    transition: transform 0.3s;
+    transition: all 0.3s;
+    box-shadow: 0 5px 20px rgba(107, 142, 35, 0.1);
+    animation: fadeIn 1s ease-out backwards;
 }
+
+.prize-card:nth-child(1) { animation-delay: 0.1s; }
+.prize-card:nth-child(2) { animation-delay: 0.2s; }
+.prize-card:nth-child(3) { animation-delay: 0.3s; }
+.prize-card:nth-child(4) { animation-delay: 0.4s; }
 
 .prize-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(107, 142, 35, 0.2);
 }
 
 .prize-card.grand {
     border: 3px solid var(--primary-green);
+    background: linear-gradient(135deg, rgba(14, 134, 63, 0.1) 0%, rgba(255, 248, 220, 0.95) 100%);
 }
 
 .prize-card.special {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--bohemian-sage) 0%, var(--bohemian-moss) 100%);
     color: var(--text-light);
 }
 
@@ -395,16 +643,18 @@ body {
     font-weight: 800;
     margin: 1rem 0;
     color: var(--primary-green);
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .prize-card.special .prize-amount {
     color: var(--text-light);
 }
 
-/* Benefits Section */
+/* Benefits Section with Bohemian Style */
 .benefits-image {
     text-align: center;
     margin: 2rem 0;
+    animation: fadeIn 1s ease-out;
 }
 
 .benefits-image img {
@@ -412,10 +662,17 @@ body {
     max-width: 800px;
     height: auto;
     border-radius: 16px;
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 15px 40px rgba(107, 142, 35, 0.2);
+    border: 3px solid var(--bohemian-sage);
+    transition: all 0.3s;
 }
 
-/* Eligibility Section */
+.benefits-image img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 50px rgba(107, 142, 35, 0.3);
+}
+
+/* Eligibility Section with Bohemian Design */
 .eligibility-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -425,10 +682,20 @@ body {
 }
 
 .eligibility-item {
-    background: var(--text-light);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.95) 100%);
     padding: 2rem;
     border-radius: 16px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 5px 20px rgba(107, 142, 35, 0.15);
+    transition: all 0.3s;
+    animation: fadeIn 1s ease-out backwards;
+}
+
+.eligibility-item:nth-child(1) { animation-delay: 0.2s; }
+.eligibility-item:nth-child(2) { animation-delay: 0.4s; }
+
+.eligibility-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(107, 142, 35, 0.2);
 }
 
 .eligibility-item h3 {
@@ -448,14 +715,13 @@ body {
 }
 
 .eligibility-item li:before {
-    content: '•';
+    content: '🌱';
     position: absolute;
     left: 0;
-    color: var(--primary-green);
-    font-weight: bold;
+    font-size: 0.875rem;
 }
 
-/* Contact Section */
+/* Contact Section with Bohemian Touch */
 .contact-content {
     max-width: 500px;
     margin: 0 auto;
@@ -463,15 +729,17 @@ body {
 }
 
 .contact-info {
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(135, 169, 107, 0.1) 100%);
     padding: 2rem;
     border-radius: 16px;
     backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    animation: fadeIn 1s ease-out;
 }
 
 .contact-info h3 {
     margin-bottom: 1.5rem;
-    color: var(--primary-green);
+    color: var(--bohemian-mint);
     font-size: 1.25rem;
 }
 
@@ -481,11 +749,16 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    animation: fadeIn 1.2s ease-out backwards;
 }
+
+.contact-item:nth-child(1) { animation-delay: 0.1s; }
+.contact-item:nth-child(2) { animation-delay: 0.2s; }
+.contact-item:nth-child(3) { animation-delay: 0.3s; }
 
 .contact-label {
     font-weight: 700;
-    color: var(--gray-300);
+    color: var(--bohemian-mint);
     font-size: 0.875rem;
 }
 
@@ -494,18 +767,33 @@ body {
     color: var(--text-light);
     text-decoration: none;
     font-size: 1rem;
+    transition: all 0.3s;
 }
 
 .contact-item a:hover {
-    color: var(--primary-green);
+    color: var(--bohemian-mint);
+    transform: scale(1.05);
 }
 
-/* Footer */
+/* Footer with Bohemian Style */
 .footer {
-    background: var(--dark-bg);
+    background: linear-gradient(135deg, var(--dark-bg) 0%, #0F1729 100%);
     color: var(--text-light);
     padding: 2rem 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '🌿 🌱 🍃';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    opacity: 0.1;
+    animation: float 10s ease-in-out infinite;
 }
 
 /* Responsive Design */
@@ -558,4 +846,16 @@ body {
     .eligibility-content {
         grid-template-columns: 1fr;
     }
+}
+
+/* Loading Animation */
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.fade-in-element.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
